@@ -1,0 +1,9 @@
+{INCLUDE wrapper_header}
+
+<div>
+    {LOOP vars}
+        <div>{PHP} echo ($_varsINDEX_+1); {PHPEND}. Driver !vars.key! = !vars.value!</div>
+    {ENDLOOP}
+</div>
+
+{INCLUDE wrapper_footer}
