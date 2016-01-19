@@ -1,0 +1,1297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Mantella MVC: Manual</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="description" content="Mantella MVC: Manual">
+<meta name="copyright" content="Mantella, 2012">
+<link rel='stylesheet' type='text/css' href='files/style.css' />
+<script type="text/javascript" src="files/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	// switch sectons
+	$('div.menu li').bind('click', function() {
+    	$('div.menu li').removeClass('selected_menu');
+    	$(this).addClass('selected_menu');
+    	$('div.content').hide();
+    	$('div#'+$(this).attr('prop')).show();
+	});
+
+	// slip menu
+	$(window).scroll( function() {
+	  $($('div.menu')).css('margin-top', parseInt($(window).scrollTop())+"px");
+	});
+
+});
+</script>
+</head>
+<body>
+
+
+<DIV class="menu">
+<ul>
+	<li prop="about" class="selected_menu">Mantella MVC</li>
+	<li prop="structure">Структура приложения</li>
+	<li prop="settings">Настройки</li>
+	<li prop="controller">Контроллеры</li>
+	<li prop="model">Модели</li>
+	<li prop="collection">Коллекции</li>
+	<li prop="view">Отображения</li>
+	<li prop="template">Язык разметка шаблонов</li>
+	<li prop="request">Объект Request</li>
+	<li prop="database">Объект Database</li>
+	<li prop="session">Сессии/Авторизация</li>
+	<li prop="exceptions">Обработка исключений</li>
+	<li prop="validator">Валидация данных</li>
+	<li prop="localization">Локализация</li>
+	<li prop="caching">Кэширование</li>
+</ul>
+</DIV>
+
+
+<!--
+========================================================================================
+========================================= ABOUT ========================================
+========================================================================================
+-->
+<DIV class="content" id="about" style="display:block;">
+<h2>Mantella MVC</h2> <br />
+<span class="section_description">
+MMVC — это фреймворк, каркас на PHP для разработки веб-приложений. <br>
+Основываясь на концепции MVC (Model View Controller), исключает шаблонные операции и обеспечивает стандартную архитектуру приложения.
+Позволяет легко разделить приложение на модели, виды и контроллеры, улучшает тестирование, делает код легко переносимым, а также помогает новым разработчикам
+в проекте быстро и легко вникнуть в процесс разработки. <br><br>
+Процесс установки и настройка фреймворка занимает несколько минут и работа с ним за счет подробного описания классов и их методов проста и эффективна.<br><br>
+Помимо MVC-компонентов MantellaMVC содержит ряд библиотек, полезных для построения приложения:<br>
+- работа с базами данных <br>
+- встроенная поддержка шаблонов <br>
+- облегчение манипуляцией за вводом/выводом потоков данных <br>
+- встроенная поддержка авторизации пользователей  <br>
+- валидация данных <br>
+- система локализаций <br>
+- определние страниц ошибок<br>
+- набор вспомогательных классов<br>
+<br><br>
+<b>Системные требования</b><br>
+Для корректной работы MMVC необходимо:<br>
+&nbsp;&nbsp;&nbsp;PHP 5.1 (или выше)<br>
+&nbsp;&nbsp;&nbsp;Поддержка веб-сервером mod_rewrite<br>
+</span>
+</DIV>
+
+
+
+<!--
+========================================================================================
+============================== APPLICATION STRUCTURE ===================================
+========================================================================================
+-->
+<DIV class="content" id="structure">
+<h2>Структура приложения</h2>
+<br>
+<img src="files/application.png" style="border:1px solid #dedede; margin-left: 42px;" /><br>
+<span class="section_description">
+<b>app/</b> - основная папка проекта. В подкаталогах хранятся модели, контроллеры, коллекции и виды (шаблоны) в соответствии с
+моделью MVC. Так же тут находятся вспомогательные классы - мапперы, которые автоматически загружаются при инициализации приложения и
+каталог локализаций. Название и рспаложение папки приложения может быть поменяно в конфигурационном файле.
+<br /><br />
+<b>config/</b> - конфигурационные файлы: настройка приложения, подключений к базам данных и авторизации.
+<br /><br />
+<b>crons/</b> - хранилище для скриптов, запускаемых по расписанию. <br /><br />
+<b>css/</b> - стили для фронт-енда приложения. При объявлении файла стилей используя шаблонный язык, скрипт ищет файл в этой папке.
+При необходимости можно изменить расположение и имя папки стилей, но задавать стиль на странице тогда нужно явно.
+<br /><br />
+<b>img/</b> - папка для изображений по-умолчанию. Может быть изменено расположение и имя.
+<br /><br />
+<b>js/</b> - javasсript библиотеки для фронт-енда приложения. При объявлении скрипта используя шаблонный язык, скрипт ищет файл в этой папке.
+При необходимости можно изменить расположение и имя папки javascript-скриптов, но задавать путь к файлам на странице тогда нужно явно.
+<br /><br />
+<b>library/</b> - базовые классы Mantella MVC. В каталоге helpers находятся всмопогательные классы, которые нужно подключать явно или через
+конфигурационный файл с секции []includes] <br /><br />
+<b>logs/</b> - папки для файлов-логов по-умолчанию. Путь к файлу логов может быть изменен в конфигурационных файлах.
+<br /><br />
+</span>
+</DIV>
+
+
+
+<!--
+========================================================================================
+====================================== SETTINGS ========================================
+========================================================================================
+-->
+<DIV class="content" id="settings">
+<h2>Настройка</h2>
+<span class="section_description">
+Конфигурационный файл располагается в директории &lt;root&gt;/config/ по умолчанию либо в любом другом месте, указанном в
+директиве inludes_path.
+</span>
+<h3>Секция [globals]</h3>
+<span class="section_description">Общие настройки приложения.<br>
+<b>APP_PATH</b> - путь к директории приложения, по умолчанию <x>'app/'</x><br>
+<b>SITE_NAME</b> - название сайта<br>
+<b>M_ADMIN_EMAIL</b> - е-майл адрес администратора сайта, будет показан на странице броузера при возникновении ошибки<br>
+<b>ERROR_DISPLAY</b> - вывод текста ошибки в броузер<br>
+<b>PHP_ERROR_LOG</b> - перенаправление php ошибок как лог-файл.<br>
+<b>ERROR_LOG_PATH</b> - путь к файлу логов, по умолчанию <x>'logs/errors.log')</x>. Убедитесь что лог-файл имеет права на запись. Удаление или комментирование
+данный строки выключает логгирование.<br>
+<b>BASE_URL</b> - адрес приложения. Если опция закомментирована, то составление этого адреса выполняется автоматически.<br>
+<b>URL_PREFIX</b> - расширяет стандартную маршрутизацию на http://domen/<b>url_prefix</b>/controller/action. В значении указывается true, если нужно учитывать
+переменную префикса при маршрутизации, и false - иначе.<br><br>
+<h3>Секция [definitions]</h3>
+Определение глобальных переменных, доступных в любом месте приложения.<br><br>
+<h3>Секция [includes]</h3>
+Подключение вспомогательных классов и библиотек<br><br>
+<h3>Секция [databases]</h3>
+Настройка подключений к базам данных. Количество подключений не ограничено.<br>
+Формат: имя_подключения.аттрибут<br><br>
+Аттрибуты:<br>
+driver	- тип базы данных, возможны варианты: mysql / mssql / postgres / oracle<br>
+host	- адрс хоста или схема для подключения oracle<br>
+port	- порт соединения. Ели не указан, оспользуется стандартный для выбранной БД<br>
+database - название базы <br>
+username - логин для подключения <br>
+password - пароль для подключения<br>
+charset - кодировка получения данных клиентов и БД, если не указано, действуют настройки БД<br><br>
+<h3>Секция [definitions]</h3>
+Настройка авторизации в БД для использования класса AUTH.<br><br>
+Параметры:<br>
+connection	- название соединения из секции databases<br>
+table		- таблица пользователей<br>
+login		- поле логина. Если используется два поля, они разделяются знаком @, например: "login@email"<br>
+password	- поле пароля<br>
+encoding	- кодировка хранимого пароля, возможны варианты: md5 / sha1<br>
+fields		- перечень полей, для объекта AUTH, запрашиваемых из БД<br>
+</span>
+<br><br>
+<span class="description">Пример конфигурации:</span>
+<pre class="example">
+[globals]
+ERROR_DISPLAY = "On"
+ERROR_LOG_PATH = "logs/errors.log"
+PHP_LOG_PATH = "logs/php_error.log"
+APP_PATH = "app/"
+SITE_NAME = "Mantella MVC Application"
+ADMIN_EMAIL = "info@domen.com"
+;BASE_URL = "http://domen.com/my_app/"
+URL_PREFIX = false
+
+[definitions]
+SERVICE_NAME = "MMVC APP"
+VARIABLE = "Hello world"
+
+[includes]
+geo_helper = "library/helpers/GeoHelper.php"
+mail_library = "library/helpers/phpmailer/class.phpmailer.php"
+mail_wrapper = "library/helpers/Mailer.php"
+
+[databases]
+db1.driver = "mysql"
+db1.host = "localhost"
+db1.port = "3306"
+db1.database = "database"
+db1.username = "user"
+db1.password = "password"
+db1.charset 	= "utf8"
+
+db2.driver = "postgres"
+db2.host = "localhost"
+;db2.port = ""
+db2.database = "pg_database"
+db2.username = "pg_user"
+db2.password = "password"
+db2.charset = "utf8"
+
+[authorization]
+connection = "db1"
+table = "users_table"
+login = "username"
+password = "password"
+encoding = ""
+fields = "id, username, fullname, email"
+</pre>
+<br />
+
+</DIV>
+
+
+<!--
+========================================================================================
+===================================== CONTROLLER =======================================
+========================================================================================
+-->
+<DIV class="content" id="controller">
+<h2>Контроллеры</h2>
+<span class="section_description">
+Контроллер - это класс, описывающий вызываемый объект и действие над этим объектом посредством написания методов класса.<br />
+Классы-контроллеры распологаются в папке app/controllers/ , при этом имя файла должно соответствовать названию контроллера (с большой буквы),
+а название класса носить такое же имя, дополненное словом Controller. <br />
+Контроллеры должны наследоваться от класса <b>MantellaController</b>. <br /><br />
+Контроллером по-умолчанию является класс с именем <x>IndexController</x> описанный в, соответственно, файле <x>controllers/Index.php</x> <br><br>
+Если файла контроллера расплагаеся в подпапках, название класса должно состоять из пути к файлу, используя знак подчеркивания в качестве разделителя, например:<br>
+Файл класса находится в: <x>app/contollers/users/Administrator.php</x><br>
+Название класса: <x>class Users_AdministratorController { }</x><br><br>
+
+Обработчик маршрутизации считает за методы действия все метода контроллера, которые начинаются с <x>do</x>. Если действие не
+передано в контроллер, по-умолчанию будет вызываться метод <x>do_()</x>. В любой метод-действие передаётся объект MantellaRequest
+для облегчения работы с входными и выходными данными.<br> <br>
+
+Если в классе контроллера определён метод <b>public init( REQUEST $request )</b>, он вызывается перед вызовом метода-действия в
+соответствии с правила маршрутизации. В метод передаётся передаётся объект <x>Request</x> c установленным названием действия, которое будет
+вызвано в контроллере впоследствии.<br><br>
+
+В классе контроллера можно опрежедить универсальный метод-действия <b>public gag( REQUEST request )</b>, он вызывается только в том случае,
+если не найден необходимый метод действия. В метод передаётся передаётся объект <x>Request</x> и с названием действия.<br><br>
+
+
+Название действия может состоять из цифр, букв латинского алфавита и тире. В названии метода тире приводится к знаку подчеркивания, например:<br>
+Адрес: <x>domen.com/user/get-operators</x><br>
+Название класса: <x>class UserController { }</x><br>
+Название метода действия: <x>public function doGet_Operators( $REQUEST ) { }</x><br>
+
+
+<br><br>
+
+</span>
+<h3>Методы</h3>
+<span class="method">Model <b>getModel</b>( string name )</span><br />
+<span class="description">возвращается объект модели по имени <x>name</x></span><br /><br />
+<span class="method">Collection <b>getCollection</b>( string name )</span><br />
+<span class="description">возвращается объект коллекции по имени <x>name</x></span><br /><br />
+<span class="method">Controller <b>getController</b>( string name )</span><br />
+<span class="description">возвращается объект контроллера по имени <x>name</x></span><br /><br />
+
+<br />
+<h3>Примеры</h3>
+<span class="description">Определение контроллера (app/controllers/Users.php)</span>
+<pre class="example">
+class UsersController extends MantellaController {
+
+	// --- Предварительная обработка действия
+	// --- Если в контроллер попал некорректный запрос, прерываем выполнение и отвечаем ошибкой
+	public function init( $REQ ) {
+		if ( !$REQ->isAjax() ) {			$REQ->reply('Invalid http request');		}
+	}
+
+
+	// --- Метод по-умолчанию, вызывается при запросе http://domen/users/
+	// --- Получает список пользователь из БД и возвращает его в формате JSON
+	public function do_( $REQ ) {
+		$users = $this->getCollection('Users');
+		$users->dbLoad();
+		$REQ->sendJson( $users->getAll() )
+	}
+
+
+	// --- Вызов добавления пользователя: http://domen/users/add?fullname=John&age=20&note=any_text
+	public function doAdd( $REQ ) {		$user = $this->getModel('User');
+		$user->set('fullname', $REQ->getVar('fullname'))
+			 ->set('age', $REQ->getVar('age'))
+			 ->set('note', $REQ->getVar('note',"", true))
+			 ->add();
+		$REQ->reply("User ID#".$user->get('id')." created");	}
+
+}
+</pre>
+</DIV>
+
+
+
+<!--
+========================================================================================
+======================================== MODEL =========================================
+========================================================================================
+-->
+<DIV class="content" id="model">
+<h2>Модели</h2>
+<span class="section_description">
+Модель - это единичный набор структурированных данных, по аналогии с одной строкой таблицы в базе данных.<br />
+Классы моделей располагаются в папке app/models/ , при этом имя файл должно соответствовать названию модели (с большой буквы) и
+название класса соответствует названию модели, дополненное словом Model. <br />
+Модели должны наследоваться от класса <b>MantellaModel</b>.
+</span>
+
+<h3>Аттрибуты</h3>
+<span class="property">DATABASE</span><br />
+<span class="description">определение идентификатора базы данных (см. конфигурацию БД) - источника данных<br><br />
+<span class="property">TABLE</span><br />
+<span class="description">таблица в БД - источник данных</span><br /><br />
+<span class="property">PRIMARY_KEY</span><br />
+<span class="description">название поля уникального идентификатора данных модели
+</span><br /><br />
+<span class="property">FIELDS</span><br />
+<span class="description">определение полей модели (ассоц. массив), фактически поля в БД<br>
+<b>Типы данных:</b><br>
+ <x>int</x> - integer, целое число<br>
+ <x>num</x> - float, дробное число<br>
+ <x>str</x> - string, строковая переменная. Для задания пустой строки, зарезервировано строкое значение "NULL"<br>
+ <x>bool</x> - boolean, значения true/false<br>
+ <x>date</x> - date, дата/время. Для задания текущей даты зарезервировано строкое значение "NOW"<br>
+ <x>fake</x> - мнимое поле, не участвует в запросах к БД
+</span><br /><br />
+<span class="property">RELATED</span><br />
+<span class="description">связка текущей модели для другими моделями для получения расширенного набора данных (см. пример), где<br>
+bind - связующее поле (ключ) в текущей модели<br>
+model - связная модель<br>
+match - связующее поле (ключ) в связной коллекции<br>
+value - выбираемое поле из связной коллекции
+</span><br /><br />
+<span class="property">VALIDATORS</span><br />
+<span class="description">определение правил проверки для полей модели, см. раздел "Валидация данных"<br>
+</span><br /><br />
+<br />
+<h3>Методы</h3>
+<span class="method">mixed <b>set<x>Field</x></b>( mixed value )</span><br />
+<span class="description"><b>Описывается внутри класса модели.</b><br>
+Кастомный сеттер - функция для преобразования хранимого значения в поле данных модели. В функцию передаётся значение для данного поля данных</span><br /><br />
+<span class="method">mixed <b>get<x>Field</x></b>( mixed value )</span><br />
+<span class="description"><b>Описывается внутри класса модели.</b><br>
+Кастомный геттер - функция для получения преобразованного значения поля данных из модели, при этом в модели остаётся неформатированное значение. В функцию передаётся
+значение для данного поля данных</span><br /><br /><br /><br />
+
+<span class="method">Model <b>set</b>( string property , mixed value , boolean applyCustomSetter = true )</span><br />
+<span class="description">Сеттер - устанавливает полю данных модели <x>property</x> значение <x>value</x>. При наличие сеттера для данного поля, он будет
+вызван при присовении значения, но если applyCustonSetter принимает значение false, функция-сеттер не будет вызвана.<br>
+Возвращает объект экземпляра модели</span><br /><br /><span class="method">mixed <b>get</b>( string property , boolean applyCustomGetter = true )</span><br />
+<span class="description">Геттер - возвращает значение поля данных модели <x>property</x> или NULL, если поле с таким именем в модели не существует. При
+наличие геттера для данного поля, он будет вызван, но если applyCustonGetter принимает значение false, функция-геттер не будет вызвана.</span><br /><br />
+<span class="method">Model <b>fill</b>( array values )</span><br />
+<span class="description">заполняет модель данными из <x>values</x>, где <x>values</x> - accoциативный массив. Возвращает объект экземпляра модели</span><br /><br />
+<span class="method">array <b>row</b>( boolean applyCustomGetter = true )</span><br />
+<span class="description">возвращает все поля данных модели в виде ассоц. массива. При наличие геттера для текущего поля, он будет вызван, но если
+applyCustonGetter принимает значение false, функция-геттер не будет вызвана.</span><br /><br />
+<span class="method">Model <b>clear</b>( boolean exceptPrimaryKey = false )</span><br />
+<span class="description">очищает набор данных и возвращает экземпляр модели. Если аргумент <x>exceprtPrimaryKey</x> истино, то поле, объявленное как уникальный ключ модели, не очищается</span><br /><br /><br />
+
+<span class="method">string <b>getPrimaryKeyName</b>( )</span><br />
+<span class="description">возвращает в виде строки название поля - уникального идентификатора набора данных модели</span><br /><br />
+<span class="method">mixed <b>getPrimaryKeyValue</b>( )</span><br />
+<span class="description">возвращает значение поля - уникального идентификатора набора данных модели</span><br /><br />
+<span class="method">Model <b>setPrimaryKey</b>( mixed value )</span><br />
+<span class="description">устанавливает значение <x>value</x> полю - уникальному идентификатору набора данных модели. Возвращает экземпляр модели</span><br /><br />
+<span class="method">array <b>getFields</b>( )</span><br />
+<span class="description">возвращает описание полей денных модели в виде ассоц. массива</span><br /><br />
+<span class="method">boolean <b>isFieldExists</b>( string name )</span><br />
+<span class="description">проверяет существует ли поле данных с именем <x>name</X> в модели</span><br /><br />
+<span class="method">mixed <b>getFieldType</b>( string name )</span><br />
+<span class="description">возвращает тип поля по имени <x>name</x> или false, если поле не найдено проверяет</span><br /><br /><br />
+
+<span class="method">boolean <b>fetch</b>( mixed primary_key_value )</span><br />
+<span class="description">загружает из БД апись в модель по ключу <x>primary_key_value</x></span><br /><br />
+<span class="method">boolean <b>add</b>( boolean reFillModel=true )</span><br />
+<span class="description">добавляет запись в БД и заполняет модель новыми данных, если reFillModel истино</span><br /><br />
+<span class="method">boolean <b>save</b>( string condition=null , boolean reFillModel=true )</span><br />
+<span class="description">модифицирует запись в таблице БД и заполняет модель новыми данных, если reFillModel истино. Может иметь дополнительные условия <x>condition</x> для UPDATE sql-запроса.<br>
+Если в модели значение primary key нет значения, происходит добавление записи в таблицу БД.</span><br /><br />
+<span class="method">boolean <b>remove</b>( string condition=null )</span><br />
+<span class="description">возвращает экземпляр класса соединения с БД. Может иметь дополнительные условия <x>condition</x> для DELETE sql-запроса.</span><br /><br /><br />
+<span class="method">boolean <b>validate</b>( )</span><br />
+<span class="description">выполняет проверку данных модели на основании правил, заданных в VALIDATORS. Если все проверки пройдены удачно, возвращает TRUE, иначе FALSE<br>
+Подробнее смотреть раздел "Валидация Данных"</span><br /><br />
+<span class="method">array <b>getUnvalidated</b>( )</span><br />
+<span class="description">возвращает массив не прошедших проверку полей модели в формате:<br />
+<x>name</x> - название поля<br />
+<x>value</x> - значение поля<br />
+<x>rule</x>  - правило (в случае если в у поля несколько правил, каждое правило создаёт свою запись в массиве)<br />
+<x>error</x> - текст ошибки<br />
+В случае если проверка была удачна, вызов функции <x>getUnvalidated</x> вернёт пустой массив. <br>Подробнее смотреть раздел "Валидация Данных"
+</span><br /><br /><br />
+
+<span class="method">string <b>getTableName</b>( )</span><br />
+<span class="description">возвращает название таблицы</span><br /><br />
+<span class="method">string <b>getDatabaseName</b>( string name )</span><br />
+<span class="description">возвращает строковый идентификатор соединения с БД</span><br /><br />
+<span class="method">MantellaDB <b>getDatabase</b>( string name )</span><br />
+<span class="description">возвращает экземпляр класса соединения с БД</span><br /><br />
+<span class="method">string <b>getLastError</b>( )</span><br />
+<span class="description">возвращает последнюю ошибку или null, если ошибки не было.</span><br /><br />
+<br /><br />
+<h3>Примеры</h3>
+<span class="description">Определение модели (app/models/Man.php)</span>
+<pre class="example">
+class ManModel extends MantellaModel {
+
+	// --- определение уникального поля для структуры данных в модели ---
+	$PRIMARY_KEY = 'id';
+
+	// --- определение полей данных модели  ---
+	$FIELDS = array(
+		'id'		=> "int",
+		'name'		=> "str",
+		'weight'	=> "num",
+		'height'	=> "num",
+		'birth'		=> "date",
+		'city_id'	=> "int", // связующее поле модели City(id, name, area, ..)
+		'city_name' => "str"  // поле связной модели
+		'city_area' => "num"  // поле связной модели
+	);
+
+	// --- привязка к таблице в БД ---
+	protected $DATABASE     = "db_connection";
+	protected $TABLE        = "db_table";
+
+	// --- связка с моделью Город ---
+	protected $RELATED = array(
+		'city_name' => array( 'bind'=>city_id, 'model'=>"City", 'match'=>"id", 'value'=>"name"),
+		'city_area' => array( 'bind'=>city_id, 'model'=>"City", 'match'=>"id", 'value'=>"area"),
+	);
+
+	// --- установка проверок необходимых полей ---
+	protected $VALIDATORS = array(
+		'name'	 => "required",
+		'weight' => "min:10|max:200",
+		'height' => "min:50"
+	);
+
+	// --- при наполнении модели данными, значение веса будет переведено в граммы из килограммов, в модели вес будет храниться в граммах ---
+	function setWeight( $value ) {		return $value*1000;	}
+
+	// --- при получении веса, значение переводиться в килограммы и добавляется единица измерения, при этом в модели вес по-прежнему храниться граммах  ---
+	function getWeight( $value ) {
+		return $value/1000." Kg";
+	}
+
+}
+</pre>
+</DIV>
+
+
+
+
+
+
+
+
+
+<!--
+========================================================================================
+===================================== COLLECTION =======================================
+========================================================================================
+-->
+<DIV class="content" id="collection">
+<h2>Коллекции</h2>
+<span class="section_description">
+Коллекция - это набор моделей, по аналогии в таблицей в базе данных. <br />
+Классы коллекций располагаются в app/collections/ , при этом имя файл должно соответствовать названию коллекции (с большой буквы) и
+название класса соответствует названию коллекции, дополненное словом Collection. <br />
+Коллекции должны наследоваться от класса <b>MantellaCollection</b>.
+</span>
+<h3>Аттрибуты</h3>
+<span class="property">MODEL</span><br />
+<span class="description">привязка модели к коллекции</span><br><br />
+
+<h3>Методы</h3>
+<span class="method">integer <b>length</b>( )</span><br />
+<span class="description">возвращает количество элементов (моделей) в коллекции</span><br /><br />
+<span class="method">array <b>getAll</b>( )</span><br />
+<span class="description">возвращает все модели коллекции а виде массива</span><br /><br />
+<span class="method">Model <b>getByIndex</b>( integer index )</span><br />
+<span class="description">возвращает экземпляр модели по индексу <x>index</x> из коллекции или FALSE если индекса не существует</span><br /><br />
+<span class="method">mixed <b>getIdByIndex</b>( integer index )</span><br />
+<span class="description">возвращает значение ключевого поля модели по индексу <x>index</x> в коллекции, или NULL если индекса не существует</span><br /><br />
+<span class="method">integer <b>getIndexById</b>( mixed id )</span><br />
+<span class="description">возвращает индекс модели в коллекции, найденной по ключу <x>id</x>, или FALSE если модель не найдена</span><br /><br />
+<span class="method">Model <b>getById</b>( mixed id )</span><br />
+<span class="description">возвращает экземпляр модели, найденной по ключу <x>id</x> в коллекции или FALSE если модели не найдено</span><br /><br />
+<span class="method">mixed <b>getValueByIndex</b>( integer index, string field )</span><br />
+<span class="description">возвращает значение поля модели <x>field</x>, найденной в коллекции по индексу <x>index</x> или NULL если модель или поле не найдено</span><br /><br />
+<span class="method">mixed <b>getValueById</b>( mixed id, string field )</span><br />
+<span class="description">возвращает значение поля модели <x>field</x>, найденной в коллекции по ключу <x>id</x> или NULL если модель или поле не найдено</span><br /><br /><br />
+
+<span class="method">Collection <b>reset</b>( )</span><br />
+<span class="description">устанавливает указатель н начало коллекции, возвращает объект коллекции</span><br /><br />
+<span class="method">Model <b>next</b>( )</span><br />
+<span class="description">возвращает следующую модель из коллекции, смещает указатель по коллекции. Если последующая модель не найдена, возвращает FALSE</span><br /><br />
+<span class="method">Model <b>first</b>( )</span><br />
+<span class="description">возвращает первую модель из коллекции, смещает указатель по коллекции. Если коллекция пуста, возвращает FALSE</span><br /><br />
+<span class="method">Model <b>last</b>( )</span><br />
+<span class="description">возвращает последнюю модель из коллекции. Если коллекция пуста, возвращает FALSE</span><br /><br /><br />
+
+<span class="method">Collection <b>sort</b>( string field, string direction )</span><br />
+<span class="description">сортирует элементы коллекции по полю модели <x>field</x> и по направлению <x>direction</x> (ASC/DESC)</span><br /><br />
+<span class="method">Collection <b>add</b>( Model model )</span><br />
+<span class="description">добавляет модель в коллекцию (без действий над БД)</span><br /><br />
+<span class="method">Collection <b>replace</b>( Model model, mixed index=null )</span><br />
+<span class="description">заменяет найденную модель в коллекции на модель <x>model</x>. Если указан <x>index</x> то модель по индексу, если индекс не указан, то
+ищет модель по primary_key и заменяет её (без действий над БД)</span><br /><br />
+<span class="method">Collection <b>remove</b>( Model model )</span><br />
+<span class="description">удаляет модель <x>model</x> из коллекции (без действий над БД)</span><br /><br />
+<span class="method">Collection <b>clear</b>( )</span><br />
+<span class="description">очищает коллекцию моделей (без действий над БД)</span><br /><br /><br />
+
+<span class="method">Collection <b>dbLoad</b>( string condition=null, string order=null, integer limit=null )</span><br />
+<span class="description">загружает данные из БД в коллекцию с заданным дополнительным условием <x>condition</x> для запроса, сортируя
+по полю <x>order</x> с ограничение по количеству записей <x>order</x></span><br /><br />
+<span class="method">integer <b>dbSumm</b>( string fields , string condition=null)</span><br />
+<span class="description">возвращает сумму по полю <x>field</x> и заданныму дополнительныму условию <x>condition</x> из БД</span><br /><br />
+<span class="method">integer <b>dbCount</b>( string condition=null)</span><br />
+<span class="description">возвращает количество строк по заданныму дополнительныму условию <x>condition</x> из БД</span><br /><br />
+<span class="method">integer <b>dbMax</b>( string fields , string condition=null)</span><br />
+<span class="description">возвращает максимальное значение поля <x>field</x> и заданныму дополнительныму условию <x>condition</x> из БД</span><br /><br />
+<span class="method">integer <b>dbMin</b>( string fields , string condition=null)</span><br />
+<span class="description">возвращает минимальное значение поля <x>field</x> и заданныму дополнительныму условию <x>condition</x> из БД</span><br /><br />
+<span class="method">integer <b>dbAverage</b>( string fields , string condition=null)</span><br />
+<span class="description">возвращает среднее значение поля <x>field</x> и заданныму дополнительныму условию <x>condition</x> из БД</span><br /><br />
+<span class="method">Collection <b>dbUpdate</b>( )</span><br />
+<span class="description">обновляет данные в БД всех моделей из коллекции, перезагружает модели в коллекцию. Возвращает экземпляр коллекции.</span><br /><br />
+<span class="method">Collection <b>dbRemove</b>( string condition=null)</span><br />
+<span class="description">удаляет данные из БД по заданныму дополнительныму условию <x>condition</x>. Если условие не задано, но очиститься вся таблица в БД.
+Метод не удаляет элементы из коллекцию.</span><br /><br />
+<span class="method">boolean <b>dbClear</b>( )</span><br />
+<span class="description">удаляет все модели из коллекции и из БД</span><br /><br /><br />
+
+<span class="method">string <b>getModelName</b>( )</span><br />
+<span class="description">возвращает название модели данных в коллекции</span><br /><br />
+<span class="method">Model <b>getModel</b>( )</span><br />
+<span class="description">возвращает экземпляр модели (без данных) из коллекции</span><br /><br />
+<span class="method">string <b>getTableName</b>( )</span><br />
+<span class="description">возвращает название таблицы БД, определенной для моделей в коллекции</span><br /><br />
+<span class="method">string <b>getDatabaseName</b>()</span><br />
+<span class="description">возвращает строковое название подключения к БД, определенный для моделей в коллекции</span><br /><br />
+<span class="method">MantellaDB <b>getDatabase</b>()</span><br />
+<span class="description">возвращает экземпляр класса-подключения к БД, определенный для моделей в коллекции</span><br /><br />
+
+<br />
+<h3>Примеры</h3>
+<span class="description">Определение коллекции моделей (app/collections/Cities.php)</span>
+<pre class="example">
+class CitiesCollection extends MantellaCollection {
+
+	// --- привязка модели к коллекции ---
+	protected $MODEL 		= "City";
+
+}
+</pre>
+<span class="description">Использование коллекции в контроллере (app/controllers/Index.php)</span>
+<pre class="example">
+class IndexController extends MantellaСontroller {
+	public function doList( $request ) {
+		// --- загружаем и показываем первые 10 городов, принадлежащие пользователю, сортированные по названию ---
+		$cities = $this->getCollection('Cities')->dbLoad( 'user_id='.AUTH::get('id') , 'name' , 10 );
+		while( $city = $cities->next() ) {
+			echo "&lt;pre&gt;".print_r( $city->row(), true )."&lt;/pre&gt;";
+		}
+	}
+
+	public function doMaximum( $request ) {		// --- получаем площадь самого большого города, принадлежащего текущему пользователю ---
+		$maxArea = $this->getCollection('Cities')->dbMax( 'area' , 'user_id='.AUTH::get('id') );	}
+}
+</pre>
+</DIV>
+
+
+
+
+
+
+
+<!--
+========================================================================================
+======================================== VIEW ==========================================
+========================================================================================
+-->
+<DIV class="content" id="view">
+<h2>Отображения</h2>
+<span class="section_description">
+Отображение - вспомогательный статический MantellaView класс для выбора, наполнения и отображения шаблона<br />
+Шаблоны распологаются в app/views/ и имеют расширение *.tmpl <br><br>
+Синоним для класса: <b>VIEW</b>
+</span>
+<h3>Методы</h3>
+<span class="method"><b>template</b>( string template )</span><br />
+<span class="description">определение шаблона для отображения</span><br /><br />
+<span class="method">boolean <b>is_template_attached</b>( )</span><br />
+<span class="description">был ли определён ранее шаблон ранее в объекте VIEW</span><br /><br />
+<span class="method"><b>set</b>( mixed names, mixed values )</span><br />
+<span class="description">устанавливает значение переменной в шаблоне<br />
+В качестве первого аргумента <x>names</x> может быть строковая переменная - имя переменной в шаблоне,
+<x>values</x> - значение переменной, либо <x>names</x> может быть ассоциативным массивом переменных для
+передачи в шаблон больше одного значения одним вызовом функции.
+</span><br /><br />
+<span class="method"><b>show</b>( boolean terminate=false )</span><br />
+<span class="description">формирует html по шаблону и отправляет результат броузеру клиента. Если <x>terminate</x> истино, но работа скрипта прерывается.</span><br /><br />
+<span class="method">string <b>render</b>( )</span><br />
+<span class="description">формирует html по шаблону и возвращает результат в виде строки.</span><br /><br />
+
+<br />
+<h3>Примеры</h3>
+<span class="description">Метод контроллера для отображения списка</span>
+<pre class="example">
+...
+public function doList( $REQ ) {
+
+	// --- получение экземпляра коллекции Team ---
+	$team = $this->getCollection( 'Team' );
+
+	// --- загрузка данных в коллекцию из БД ---
+ 	$team->dbLoad( null );
+
+	// --- назначение отображению шаблона viewteam ---
+	MantellaView::template("viewteam");
+
+	// --- передача переменной в шаблон ---
+	VIEW::set("count", $team->length() );
+
+	// --- передача списка игроков команды, сортированных по имени ---
+	VIEW::set("team", $team->sort("name", "asc")->getAll() );
+
+    // --- отправка страницы броузеру ---
+    VIEW::show();
+
+}
+...
+</pre>
+
+<span class="description">Шаблон отображения списка</span>
+<pre class="example">
+
+&lt;html&gt;
+{META charset=utf-8}
+{STYLES "main, icons"}
+{HEAD "Team"}
+&lt;body&gt;
+	&lt;table&gt;
+	&lt;tr&gt;
+	  &lt;th&gt; # &lt;/th&gt;
+	  &lt;th&gt; Id &lt;/th&gt;
+	  &lt;th&gt; Name &lt;/th&gt;
+	&lt;/tr&gt;
+	{LOOP team}
+	&lt;tr&gt;
+	  &lt;td&gt; {PHP} echo ($_teamINDEX_+1); {PHPEND} &lt;/td&gt;
+	  &lt;td&gt; !team.id! &lt;/td&gt;
+	  &lt;td&gt; !team.name! &lt;/td&gt;
+	&lt;/tr&gt;
+	{ENDLOOP}
+	&lt;tr&gt;
+	  &lt;td colspan="3" align="right"&gt;{IF !count!>0} found !count! records {ELSE} records not found {ENDIF} &lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</pre>
+</DIV>
+
+
+
+
+<!--
+========================================================================================
+===================================== TEMPLATES ========================================
+========================================================================================
+-->
+<DIV class="content" id="template">
+<h2>Язык шаблонной разметки</h2><br>
+
+<h3>Включение</h3>
+<span class="section_description">Опция для включения жругих шаблонов в текущий. Если во включаемых шаблонах имеются свои включения, то они тоже задействуются</span><br /><br />
+<span class="description">Пример включения шаблона из файла views/second.tmpl</span>
+<pre class="example">
+{INCLUDE second}
+</pre>
+<br>
+<h3>Meta-данные</h3>
+<span class="section_description">Сокращенная записи генерации мета-данных</span><br /><br />
+<span class="description">Пример</span>
+<pre class="example">
+{META charset=utf-8}
+{META author=John}
+</pre>
+<br>
+<h3>Заголовок</h3>
+<span class="section_description">Вставка названия сайта в html-страницу</span><br /><br />
+<span class="description">Общий заголовок из перемой названия сайта в конфиг-файле</span>
+<pre class="example">
+{HEAD}
+</pre>
+<span class="description">Вставка собственного заголовка</span>
+<pre class="example">
+{HEAD "My super site"}
+</pre>
+<h3>Подключение файлов</h3>
+<span class="section_description">Сокращённая запись включения внешних файл стилей CSS и javascript скриптов JS</span><br /><br />
+<span class="description">Подключение нескольких файлов css</span>
+<pre class="example">
+{STYLES "mainstyle, icons"}
+</pre>
+<span class="description">Подключение нескольких файлов js</span>
+<pre class="example">
+{SCRIPTS "jquery, plugin/popup.js"}
+</pre>
+<br>
+<h3>Вставка переменных</h3>
+<span class="section_description">для отображения переданных в шаблон переменных</span><br /><br />
+<span class="description">Передача в шаблон</span>
+<pre class="example">
+...
+MantellaView::set('name', "John");
+MantellaView::set('food', "apple pie");
+MantellaView::set('drink', "tea");
+...
+</pre>
+<span class="description">Отображение</span>
+<pre class="example">
+!name! eats !food! and drinks !drink!
+</pre>
+<br>
+<h3>PHP</h3>
+<span class="section_description">При необходимости можно вставить блоки кода на чистом PHP</span><br /><br />
+<span class="description">Пример</span>
+<pre class="example">
+{PHP}
+$a = 6;
+$b = 8;
+echo "Sum of $a and $b is ".($a+$b);
+{PHPEND}
+</pre>
+<br>
+<h3>Условия</h3>
+<span class="section_description">предназначение для отображения различной информации в зависимости от условия</span><br /><br />
+<span class="description">Передача в шаблон</span>
+<pre class="example">
+...
+MantellaView::set('count', 5);
+...
+</pre>
+<span class="description">Отображение</span>
+<pre class="example">
+{IF !count!>0} Found !count! items {ELSE} Items not found {ENDIF}
+</pre>
+<br>
+<h3>Циклы</h3>
+<span class="section_description">опция цикла позволяет отображать массивы данных и списки</span><br /><br />
+<span class="description">Передача в шаблон</span>
+<pre class="example">
+...
+$data = array();
+$data[0] = array( 'name'=>"John", 'auto'=>"Mercedes", 'experience'=>8 );
+$data[1] = array( 'name'=>"Peter", 'auto'=>"BMW", 'experience'=>4 );
+$data[2] = array( 'name'=>"Jessica", 'auto'=>"Honda", 'experience'=>2 );
+MantellaView::set('drivers', $data);
+...
+</pre>
+<span class="description">Отображение</span>
+<pre class="example">
+{LOOP drivers}
+{PHP} echo ($_driversINDEX_+1); {PHPEND}. Driver !drivers.name! drives !drivers.auto! already !drivers.experience! years. &lt;br&gt;
+{ENDLOOP}
+</pre>
+<span class="section_description">внутри цикла на уровне PHP доступна переменная _&lt;<x>название_переменной_массива</x>&gt;INDEX_ , содержащая порядкой номер прохода по циклу.</span><br>
+<span class="description">Пример сгенерирует следующий текст:<br />
+<i>
+1. Driver John drives Mercedes already 8 years.<br />
+2. Driver Peter drives BMW already 4 years.<br />
+3. Driver Jessica drives Honda already 2 years.
+</i>
+</span>
+
+</DIV>
+
+
+
+
+
+
+
+<!--
+========================================================================================
+====================================== REQUEST =========================================
+========================================================================================
+-->
+<DIV class="content" id="request">
+<h2>Объект Request</h2>
+<span class="section_description">
+Request - класс, для облегчения работы с входным/выходным потоками данными. Экземпляр класса передаётся в методы-действия контроллера.
+</span>
+<h3>Методы</h3>
+<span class="method">mixed <b>getVars</b>( string varname, mixed defaultValue, boolean canValueNull)</span><br />
+<span class="description">возвращает GET или POST переменную по её имени <x>varname</x>. <br />
+Если переменной с указанным именем не найдено и она не может быть пустой <x>canValueNull</x> = false, возвращается значение <x>defaultValue</x>, иначе возвращается NULL.
+</span><br /><br />
+
+<span class="method">mixed <b>getVar</b>( string varname, mixed defaultValue, boolean canValueNull)</span><br />
+<span class="description">возвращает GET или POST переменную по её имени <x>varname</x>. <br />
+Если переменной с указанным именем не найдено и она не может быть пустой <x>canValueNull</x> = false, возвращается значение <x>defaultValue</x>, иначе возвращается NULL.
+</span><br /><br />
+<span class="method">string <b>getVarType</b>( string varname )</span><br />
+<span class="description">возвращает метод получения переменной: GET / POST по имени <x>varname</x>, если переменной в таким именем не существует возвращается UNKNOWN.</span><br /><br />
+<span class="method">mixed <b>getPost</b>( string varname, mixed defaultValue, boolean canValueNull)</span><br />
+<span class="description">возвращает POST переменную по её имени <x>varname</x>. <br />
+Если переменной с указанным именем не найдено и она не может быть пустой <x>canValueNull</x> = false, возвращается значение <x>defaultValue</x>, иначе возвращается NULL.
+</span><br /><br />
+<span class="method">mixed <b>getGET</b>( string varname, mixed defaultValue, boolean canValueNull)</span><br />
+<span class="description">возвращает GET переменную по её имени <x>varname</x>. <br />
+Если переменной с указанным именем не найдено и она не может быть пустой <x>canValueNull</x> = false, возвращается значение <x>defaultValue</x>, иначе возвращается NULL.
+</span><br /><br />
+<span class="method">string <b>getPrefix</b>( )</span><br />
+<span class="description">возвращает значение префиксной переменной, если она была разрешена в конфигурации.</span><br /><br />
+<span class="method">string <b>getAction</b>( )</span><br />
+<span class="description">возвращает название текущего метода-действия в контроллере.</span><br /><br /><br />
+
+<span class="method">boolean <b>isAjax</b>(  )</span><br />
+<span class="description">если на сервер был Ajax-запрос, возвращает TRUE, иначе FALSE.</span><br /><br /><br />
+
+<span class="method"><b>reply</b>( string text )</span><br />
+<span class="description">отправляет в броузер порцию строковых данных <x>text</x>.</span><br /><br />
+<span class="method">boolean <b>replyJson</b>( mixed data, string success_description )</span><br />
+<span class="description">отправляет клиенту JSON-структуру с данным:<br>
+{ success:true, message:'<x>success_description</x>', data: <x>data</x> }<br>
+В качестве данных data могут быть как простые типы данных, так и массивы</span><br /><br />
+<span class="method"><b>replyJsonError</b>( string error_description )</span><br />
+<span class="description">отправляет клиенту JSON-структуру с ошибкой:<br>
+{ success:false, message:'<x>error_description</x>' }</span><br /><br />
+<span class="method"><b>download</b>( string filepath , [string filename] )</span><br />
+<span class="description">отправляет в броузер клиенту файл по пути <x>filepath</x> (путь указывается от корневого каталога проекта) для скачивания. Параметр <x>filename</x> задаёт имя файлу, если этот параметр на задан, имя файла берется оригинальное.</span><br /><br />
+<span class="method"><b>redirect</b>( string url )</span><br />
+<span class="description">осуществляет перенаправление на указанный в <x>url</x> интернет-адрес.</span><br /><br /><br />
+
+<span class="method"><b>error</b>( int cause , string message )</span><br />
+<span class="description">генерирует http-ошибку с кодом <x>cause</x> и дополнительным сообщением <x>message</x>.</span><br /><br />
+<span class="method"><b>dump</b>( mixed object )</span><br />
+<span class="description">функция для отладки: отправляет в броузер дамп объекта <x>object</x>.</span><br /><br />
+
+<h3>Пример</h3>
+<pre class="example">
+...
+	$id = $REQ->get('id',false,false);
+	if ($id && $REQ->isAjax()) {		$return = "Incoming Ajax variable ID=".$id;
+		$REQ->replyJson($return);	}
+	else {
+		$REQ->replyJsonError('Unknown ID');
+	}
+...
+</pre>
+</DIV>
+
+
+
+
+
+<!--
+========================================================================================
+====================================== DATABASE ========================================
+========================================================================================
+-->
+<DIV class="content" id="database">
+<h2>Объект Database</h2>
+<span class="section_description">
+Есть возможность обратиться к описанной в конфигурации базе данных напрямую, без привлечения коллекций.<br>
+Ддя этого в методе контроллере достаточно получить объект MantellaDB из менеджера соединений DBM:</span>
+<pre class="example">
+$db = DBM::get('database');
+</pre>
+<span class="section_description">, где в функцию get передаётся идентификатор базы данных в конфигурационном файле. Функция возвращает указатель на
+объект соединения с базой данных, либо FALSE с случае ошибки подключения или неверного идентификатора. </span>
+<h3>Методы</h3>
+<span class="method">boolean <b>isConnected</b>( )</span><br />
+<span class="description">если c базой данных есть соединение, возвращает TRUE, иначе FALSE<br /><br />
+<span class="method">mixed <b>safe</b>( mixed value )</span><br />
+<span class="description">возвращается экранированное значение для конкретной базы данных, которое можно вставить в sql запрос. При обновлении или добавлении
+записей в БД через коллекцию или через вызов процедуры/функции значения автоматически экранируются.<br /><br />
+<span class="method">mixed <b>execSQL</b>( string sql )</span><br />
+<span class="description">выполняет запрос <x>sql</x>, в случае неудачи возвращает FALSE, если запрос выполнен, то в зависимости от типа запроса возвращает:<br/>
+SELECT/SHOW: если из базы данных выбрана пустая выборка - TRUE, если не пустая - array,<br />
+INSERT/UPDATE/DELETE/ALTER: всегда TRUE</span><br /><br />
+<span class="method">mixed <b>execProcedure</b>( string name, array() parameters )</span><br />
+<span class="description">&nbsp;</span><br /><br />
+<span class="method">mixed <b>execFunction</b>( string name, array() parameters )</span><br />
+<span class="description">&nbsp;</span><br /><br />
+<span class="method">array <b>getLastError</b>( )</span><br />
+<span class="description">возвращает ошибку последнего действия в виде ассоц. массива: array[code] - код ошибки, array['text'] - описание ошибки</span><br />
+<h3>Пример</h3>
+<span class="description">Работа с MantellaDB напрямую</span>
+<pre class="example">
+public function doGetUser( $REQ ) {
+
+	$user_id = $REQ->getVar('id', 0, false);
+
+	$db = DBM::get('my_db');
+	$result = $db->execSql("select * from users where user_id=".$user_id);
+
+	if (is_array($result)) {
+		$REQ->replyJson( $result[0] );
+	}
+	else {
+		if($result === false) {
+			$error = $db->getError();
+			$REQ->replyJsonError("Error #".$error['code'].": " . $error['text']);
+		}
+		else { $REQ->replyJsonError('User not found!'); }
+	}
+
+}
+</pre>
+</DIV>
+
+
+
+
+
+
+<!--
+========================================================================================
+====================================== SESSION =========================================
+========================================================================================
+-->
+<DIV class="content" id="session">
+<h2>Сессии/Авторизация</h2>
+<span class="section_description">
+Сессия - это вспомогательный статический класс, облегчающий работы по авторизации пользователей на сайте<br />
+Чтобы задействовать встроенную авторизацию, необходимо чтбы в конфигурационных файла была подключены классы MantellaDBManager и MantellaSession.<br /><br />
+Синоним вызова: <b>AUTH</b><br />
+</span>
+
+<br />
+<h3>Методы</h3>
+<span class="method"><b>init</b>( string link_table, string fieds, string auth_pair)</span><br />
+<span class="description">инициализация объекта. При инициализации читается опции секции [authorization]. В случае, если в функцию передаются параметры, они замещают собой
+настоечную строку из конфигурации. <br>
+Если в функцию нет необходимости передавать параметры, отличные от настроек, можно не инициализировать объект - он сам инициализируется при вызове
+функций login, get и set.</span><br /><br />
+<span class="method"><b>set</b>( string property , mixed value )</span><br />
+<span class="description">устанавливает полю сессии <x>property</x> значение <x>value</x>.</span><br /><br />
+<span class="method">mixed <b>get</b>( string property )</span><br />
+<span class="description">возвращает значение поля сессии <x>property</x> или NULL, если поля с таким именем не существует</span><br /><br />
+<span class="method">boolean <b>login</b>( string username, string password )</span><br />
+<span class="description">авторизирует пользователя, заполняет структуру сессии данными</span><br /><br />
+<span class="method">array <b>logged</b>( )</span><br />
+<span class="description">возвращает в виде ассоцю массива данные из сессии, либо NULL если авторизации не происходило</span><br /><br />
+<span class="method"><b>logout</b>( )</span><br />
+<span class="description">стирает все данные авторизации, очищает сессию</span><br /><br />
+<span class="method">string <b>error</b>( )</span><br />
+<span class="description">возвращает ошибку на последнее действие или NULL, если операция была успешной.
+<br>При этом ошибка очищается из объекта</span><br /><br />
+<br />
+<h3>Примеры</h3>
+<span class="description">Метод контроллера для авторизации пользователя</span>
+<pre class="example">
+...
+public function doLogin( $REQ ) {
+
+    // --- входные данные ---
+	$username = $REQ->getVar('user');
+	$password = $REQ->getVar('password');
+
+    // --- попытка авторизации ---
+	if ( AUTH::login( "user", "secret_phrase" ) ) { // --- Удачно		$REQ->reply("Welcome " . AUTH::get('fullname') . "!");	}
+	else {	 	// --- Неудачно
+	 	$REQ->reply("Authorization failed! Error: " . AUTH::error() );	}
+
+}
+...
+</pre>
+</DIV>
+
+
+
+
+
+<!--
+========================================================================================
+==================================== EXCEPTIONS ========================================
+========================================================================================
+-->
+<DIV class="content" id="exceptions">
+<h2>Исключения</h2>
+<br />
+<span class="section_description">
+Для корректного отображения страницы ошибки и записи логов, следует иницировать исключение следующим образом:<br>
+<b>throw new MantellaException( string message , integer code );</b> , где<br>
+<x>message</x> - пользователькое сообщение об ошибке<br>
+<x>code</x> - код ошибки (соответcвует http кодам ошибок)
+</span><br /><br />
+<span class="section_description">
+При использовании шаблонных отображений ошибок, в шаблон автоматически передаётся массив <x>error</x> со следующими полями:<br>
+<x>refnum</x> - уникальный идентификатор ошибки<br>
+<x>code</x> - код ошибки<br>
+<x>date</x> - дата в формате d.m.Y<br>
+<x>time</x> - время в формате H:i:s<br>
+<x>addr</x> - IP пользователя<br>
+<x>url</x> - строка запроса к серверу<br>
+<x>descr</x> - пользовательский текст ошибки<br>
+<x>cause</x> - текст ошибки<br>
+<x>admin</x> - контактный e-mail из конфигурации
+</span><br /><br />
+<h3>Примеры</h3>
+<span class="description">Инициализация исключения в контроллере</span>
+<pre class="example">
+...
+public function doUser( $request ) {	if ( !AUTH::logged() ) {		throw new MantellaException("Unknown user - access denied" , 403);	}
+}
+...
+</pre>
+<span class="description">Шаблон для вывода ошибки (app/views/errors/CODE.tmpl)</span>
+<pre class="example">
+&lt;div style="margin: 50 auto; padding:20px; width:40%; border:1px solid #C0C0C0; font-size:12px;"&gt;
+	Reference number:  !error.refnum! &lt;br&gt;
+	Error code: !error.code! &lt;br&gt;
+	Timestamp: !error.date! !error.time! &lt;br&gt;
+	IP Address: !error.addr! &lt;br&gt;
+	URL: !error.url! &lt;br&gt;
+	HTTP cause: !error.cause! &lt;br&gt;
+	Admin e-mail: !error.admin!
+&lt;/div&gt;
+</pre>
+</DIV>
+
+
+
+
+<!--
+========================================================================================
+======================================== VALIDATOR ==========================================
+========================================================================================
+-->
+<DIV class="content" id="validator">
+<h2>Валидация данных</h2>
+<span class="section_description">
+Валидатор - вспомогательный статический класс для проверки данных по определённым правилам. <br>
+На основании этого класса встроенна поддержка валидации у моделей (MantellaModel).<br><br>
+Синоним класса: <b>CHK</b>
+</span>
+<h3>Методы</h3>
+<span class="method">boolean <b>check</b>( array data, array rules, array error_massages=null )</span><br />
+<span class="description">Принимает массив данных в виде ассоц. массива и набор правил для проверки, так же в виде ассоц. массива. Соответствие поля данных и правила для него
+обусловлено совпадением ключей в массивах. В случае если необходимы собственные тексты ошибок (например при локализации) - есть возможность передать их в массиве
+<x>error_messages</x>, в противном случае вернутся предопределённые в классе MantellaValidator тексты ошибок</span><br /><br />
+<span class="method">array <b>getUnvalidated</b>( )</span><br />
+<span class="description">возвращает массив не прошедших проверку полей модели в формате:<br />
+<x>name</x> - название поля<br />
+<x>value</x> - значение поля<br />
+<x>rule</x>  - правило (в случае если у поля несколько правил, каждое правило создаёт свою запись в массиве)<br />
+<x>error</x> - текст ошибки<br />
+В случае если проверка была удачна, вызов функции <x>getUnvalidated</x> вернёт пустой массив.
+</span><br /><br />
+<h3>Правила проверки</h3>
+<span class="section_description">
+Правила могут иметь один и более параметров, так же у одного поля может быть несколько правил<br>
+Формат записи: <x>правило1</x>:<x>параметр1</x>,<x>параметер2</x>|<x>правило2</x>:<x>параметр1</x>,<x>параметер2</x> ...
+
+<br /><br />
+<b>required</b> - поле не может быть пустой строкой или содержать null</br />
+<b>required_if:<x>field</x></b> - поле не может быть пустой строкой или содержать null при условии что поле <x>field</x> тоже не пустое</br />
+<b>is:<x>value</x></b> - проверка не нестрогое равенство с <x>value</x> (без учета регистра)</br />
+<b>integer</b> - проверка на целое число</br />
+<b>max:<x>num</x></b> - ограничение максимального значения для числа</br />
+<b>min:<x>num</x></b> - ограничение минимального значения для числа</br />
+<b>limits:<x>min</x>,<x>max</x></b> - ограничение значения по числовому диапозону</br />
+<b>letters</b> - только символы латинского алфавита</br />
+<b>size:<x>num</x></b> - соответствие длины строкого значения по <x>num</x></br />
+<b>sizes:<x>min</x>,<x>max</x></b> - соответствие длины строкого значения по диапазону <x>min</x> - <x>max</x></br />
+<b>allow:<x>value1</x>,<x>value2</x>,...</b> - перечень допустимых значений <x>value1,value2,..</x></br />
+<b>deny:<x>value1</x>,<x>value2</x>,...</b> - перечень запрещенных значений <x>value1,value2,..</x></br />
+<b>equal:<x>field</x></b> - значение поле должно быть равно значению в поле <x>field</x></br />
+<b>different:<x>field</x></b> -  - значение поле не можеть быть равным значению в поле <x>field</x></br />
+<b>hex</b> - проверка на соответствие hex-последовательности</br />
+<b>email</b> - проверка на соответствие адресу почты</br />
+<b>url</b> - проверка на соответствие интернет-адресу</br />
+<b>ip</b> - проверка на соответствие IP-адресу</br />
+<b>simple_password</b> - проверка на сложность пароля (минимум 6 символов, присутствуют буквы и цифры)</br />
+<b>medium_password</b> - проверка на сложность пароля (минимум 8 символов, присутствуют буквы, цифры и служебные символы)</br />
+<b>strong_password</b> - проверка на сложность пароля (минимум 10 символов, присутствуют буквы в верхнем и нижнем регистрах, цифры и служебные символы )</br />
+<b>regexp:<x>expression</x></b> - проверка по регулярному выражению <x>expression</x></br />
+</span>
+<br /><br />
+
+
+<h3>Примеры</h3>
+<span class="description">Метод контроллера для отображения списка</span>
+<pre class="example">
+...
+public function doAnyAction( $REQ ) {
+	$data = array(
+		'name' => "John Johnson",
+		'age' => 25,
+		'gender' => "male",
+		'email' => "john@mail.com",
+		'about' => "..."
+	);
+	$rules = arrau(
+		'name' => "sizes:5,100", // обязательное поле длиной в диапазоне от 5-ти до 100 символов
+		'age' => "limits:18,100", // возрастной ценз от 18-ти, до 100 лет
+		'gender'  => "allow:male,female", // возможно только два значения поля
+		'email' => "email", // проверка строки на соответствие адресу почты
+		'about' => "sizes:100,*" // минимум 100 символов
+	);
+	$errors = array(
+		'name' => "Name is required",
+		'age'  => "Age is out of range",
+		'gender'  => "What???",
+		'email' => "Invalid email",
+		'about' => "Tell me about you!"
+	);
+
+	if ( !CHK::check($data, $rules, $errors) ) {
+		$err_array = CHK::getUnvalidated();
+		foreach($err_array as $index => $error) {
+			echo "Field[".$error['name']."] Value[".$error['value']."] Rule[".$error['rule']."] Text[".$error['error']."]&lt;br&gt;";
+		}
+	}
+	else { echo "Validation was success!"; }
+}
+...
+</pre>
+
+<span class="description">Валидация в модели</span>
+<pre class="example">
+class ManModel extends MantellaModel {
+	$PRIMARY_KEY = 'id';
+	$FIELDS = array(
+		'id'		=> "int",
+		'name'		=> "str",
+		'weight'	=> "int",
+		'height'	=> "int",
+	);
+
+	// --- установка проверок необходимых полей ---
+	protected $VALIDATORS = array(
+		'name'	 => "required",
+		'weight' => "int",
+		'height' => "limits:10,200"
+	);
+
+	// --- в качестве текстов ошибок указывается секция в файле локализации (см. пример в разделе Локализации)
+	protected $VALIDATORS_ERRORS = 'man_validation_errors';
+
+}
+</pre>
+
+
+</DIV>
+
+
+
+
+
+<!--
+========================================================================================
+==================================== LOCALIZATION ======================================
+========================================================================================
+-->
+<DIV class="content" id="localization">
+<h2>Локализация</h2>
+<span class="section_description">
+Локализатор - вспомогательный простой класс MantellaLocalization для поддержки нескольких языков на сайте.<br>
+Файлы локализации распологаются в app/localizations/, имя файла должно состоять из двух символов по сокращению
+языка в стандарте ISO 639-1 (2002) и и иметь расширение .ini. Сам файл локализации представлять из себя простой
+ini-файл со списком пар "ключ-значение" без разделения на секции или с разделением (максимум 2 уровня).<br>
+Обращать к классу можно по полному имени или по синониму <b>LNG</b>.
+
+</span>
+<h3>Методы</h3>
+<span class="method"><b>init</b>( string language )</span><br />
+<span class="description">Устанавливает локализацию на язык <x>language</x>. Если файла локализации с переданным значением
+языка не существует, устанавливается язык en.ini (английский).</span><br /><br />
+<span class="method">mixed <b>get</b>( string key )</span><br />
+<span class="description">возвращает значение по ключу или массив значений, если в качестве ключа передаётся название секции. Для обращения
+к переменной внутри секции, в качестве ключа передаётся название секции и переменной, разделённые точкой.</span><br /><br />
+<span class="method">array <b>languages</b>( )</span><br />
+<span class="description">возвращает массив доступных языков в виде пары: id и name. Id - имя файла локализации без расширения, name - значение переменной language из файла локализации.</span><br /><br />
+<span class="method">mixed <b>getCurrent</b>( string what=null )</span><br />
+<span class="description">возвращает текущий язык в виде пары id и name, либо в строковое значение, если <x>what</x> указывает какое из значений вернуть</span><br /><br />
+
+<h3>Примеры</h3>
+<span class="description">Файл локализации (ru.ini)</span>
+<pre class="example">
+language = "русский" ; обязательное поле
+
+[user]
+name = "Имя"
+age  = "Возраст"
+
+; --- Это тектсы ошибок раздела Валидация Данных для модели ---
+[man_validation_errors]
+name	= "Имя обязательно"
+weight	= "Вес должен быть целым числом"
+height	= "Рост от 10 см до 2 метров"
+
+</pre>
+<br>
+<span class="description">Получение перевода и передача его в шаблон из контроллера</span>
+<pre class="example">
+LNG::init("ru");
+MantellaView::template('view');
+MantellaView::set('language', LNG::get('lang') );
+MantellaView::set('user', LNG::get('user') ); // ассоц. массив
+MantellaView::set('age', LNG::get('user.age') ); // строка
+</pre>
+<br>
+<span class="description">Отображение в шаблоне (view.tmpl)</span>
+<pre class="example">
+Your language: !language! &lt;br&gt;
+!user.name! : John  &lt;br&gt;
+!user.age! : Johnson &lt;br&gt;
+"Age" translation is !age! &lt;br&gt;
+</pre>
+</DIV>
+
+
+
+
+
+
+<!--
+========================================================================================
+======================================= CACHING ========================================
+========================================================================================
+-->
+<DIV class="content" id="caching">
+<h2>Кэширование</h2>
+<span class="section_description">
+Вспомогательный статичный класс MantellaCache для для кэширования информации в файловой системе.<br>
+Обращать к классу можно по синониму <b>CACHE</b>.
+
+</span>
+<h3>Методы</h3>
+<span class="method"><b>init</b>( string path = null, integer time = null, string prefix = null )</span><br />
+<span class="description">Инициализирует класс кэширования, устанавливая необходимые параметры:<br>
+<x>path</x> - путь к каталогу кэша. Если не определено, то используется временный каталог php.<br />
+<x>time</x> - время хранения кэша в секундах. Если не определено или не передано аргументом в методе <x>get</x>, то 86400 секунд, т.е. сутки<br />
+<x>prefix</x> - префикс для файлов-кэша. Если не опредено, то "m-cache-"<br>
+&nbsp;&nbsp;&nbsp;Перед использованием класса инициализация не обязательна, если она не была сделана - параметры будет иметь дефолтные значения.
+</span><br /><br />
+
+<span class="method"><b>set</b>( string key, string value )</span><br />
+<span class="description">запоминает пару ключ-значение. Значением может быть как простой тип, так и структурированный.</span><br /><br />
+
+<span class="method">mixed <b>get</b>( string key, integer time = null )</span><br />
+<span class="description">возвращает значение по ключу. Если пары ключ-знаение не найдено или истёк срок действия, возвращается FALSE. Аргумент
+<x>time</x> (в секундах) задаёт максимальный срок действия пары ключ-значение в секундах, если этот аргумент не определён или NULL, значение
+берётся из параметров, заданных при инициализации.</span><br /><br />
+
+<span class="method">boolean <b>clear</b>( string key )</span><br />
+<span class="description">удаляет пару по ключу из кэша</span><br /><br />
+
+<h3>Примеры</h3>
+<span class="description">Метод-действие в контроллере</span>
+<pre class="example">
+public function do_($request) {	// --- запоминаем время начала выполнения скрипта ---
+	$exec_time = microtime(); # начало отсчёта
+	$cached = true;
+
+	// --- проверяем в кэше переменную, установленную позже минуты назад ---
+	$data = CACHE::get('my_array', 60);
+
+	// --- если не найдено, генерируем массив и запоминаем его в кэше ---
+	if ( $data===false ) {
+		$data = array();
+		for($i=0;$i&lt;1000;$i++) {
+			$data[] = rand(1,99999);
+		}
+		$cached = false;
+		CACHE::set('my_array',$data);
+	}
+
+	// --- вывод результата ---
+ 	echo ( $cached ? "Array from cache: " : "Array is generated: " ) . sprintf( '%.6f sec', (microtime()-$exec_time) );
+}
+</pre>
+</DIV>
+
+
+
+</body>
+</html>
+
